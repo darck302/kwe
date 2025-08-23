@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>hi</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin-top: 50px;
+            direction: rtl;
+        }
+        a {
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        /* شێوازی پاپئەپ */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border: 2px solid #ccc;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        .close {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<!-- لینکەکە -->
+<a onclick="showImage()"></a>
+
+<!-- پاپئەپ -->
+<div id="popup" class="popup">
+    <span class="close" onclick="closePopup()">&times;</span>
+    <img id="popupImage" src="" width="300">
+</div>
+
+<script>
+    function showImage() {
+        img // لینکی وێنەکەت دابنێ لێرە (URL)
+        var img // 🔄 ئەمە بگۆڕە بە لینکی وێنەکەت
+        document.getElementById("popupImage").src = imageUrl;
+        document.getElementById("popup").style.display = "block";
+    }
+
+    function closePopup() {
+        document.getElementById("popup").style.display = "none";
+    }
+</script>
+
+</body>
+</html>
