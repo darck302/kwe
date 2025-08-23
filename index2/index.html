@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ku">
+<head>
+  <meta charset="UTF-8">
+  <title>وێنە بگرە</title>
+</head>
+<body>
+  <h2>📸 کلیک بکە بۆ وێنە گرتن</h2>
+  <button onclick="openCamera()">کامێرا بکەوە</button>
+  <video id="video" autoplay playsinline width="300"></video>
+  <canvas id="canvas" style="display:none;"></canvas>
+  <br>
+  <button onclick="takePhoto()">وێنەم بگرە</button>
+  <img id="photo" width="300"/>
+  
+  <script>
+    let video = document.getElementById('video');
+    let canvas = document.getElementById('canvas');
+    let photo = document.getElementById('photo');
+    let stream;
+
+    async function openCamera() {
+      stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
+    }
+
+    function takePhoto() {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d').drawImage(video, 0, 0);
+      photo.src = canvas.toDataURL('image/png');
+    }
+  </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ku">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>وێنەگرتن بە کلیک</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: white;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .instructions {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: right;
+            direction: rtl;
+        }
+        
+        .instructions h2 {
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .instructions ol {
+            padding-right: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .image-container {
+            margin: 20px 0;
+            position: relative;
+            display: inline-block;
+        }
+        
+        #downloadableImage {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        #downloadableImage:hover {
+            transform: scale(1.02);
+        }
+        
+        .download-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .download-btn:hover {
+            background-color: #ff7043;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .download-btn:active {
+            transform: translateY(0);
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .notification.show {
+            opacity: 1;
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .download-btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>وێنەگرتن بە کلیکی ماوس</h1>
+        
+        <div class="instructions">
+            <h2>ڕێنماییەکان</h2>
+            <ol>
+                <li>کلیکی ڕاست لەسەر وێنەکە بکە و "پەڕگەی وێنە هەڵبگرە" هەڵبژێرە</li>
+                <li>یان کلیک لەسەر دوگمەی خوارەوە بکە بۆ هەڵگرتنی وێنەکە</li>
+                <li>وێنەکەت لە ئامێرەکەت دەپارێزرێت</li>
+            </ol>
+        </div>
+        
+        <div class="image-container">
+            <img id="downloadableImage" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNTAwIiB2aWV3Qm94PSIwIDAgODAwIDUwMCI+PHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSI1MDAiIGZpbGw9IiMzNjk0ZDgiLz48Y2lyY2xlIGN4PSI0MDAiIGN5PSIyNTAiIHI9IjE1MCIgZmlsbD0iIzZlYzhmNiIvPjxwYXRoIGQ9Ik0zNTAgMjAwIEg0NTAgVjMwMCBIMzUwIFoiIGZpbGw9IiNmZmYiLz48dGV4dCB4PSI0MDAiIHk9IjM4MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxl">↗️ وێنەی نموونە</text></svg>" alt="وێنەی نموونە">
+        </div>
+        
+        <button class="download-btn" onclick="downloadImage()">وێنەکە هەڵبگرە</button>
+    </div>
+    
+    <div class="notification" id="notification">وێنەکە هەڵگیرا!</div>
+    
+    <script>
+        function downloadImage() {
+            // دروستکردنی ئەرکی هەڵگرتن
+            const link = document.createElement('a');
+            link.href = document.getElementById('downloadableImage').src;
+            link.download = 'my_image.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // نیشاندانی ئاگاداری
+            showNotification();
+        }
+        
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // زیادکردنی کاریگەری کلیکی ڕاست
+        document.getElementById('downloadableImage').addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            downloadImage();
+        });
+    </script>
+</body>
+</html>
